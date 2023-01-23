@@ -1,0 +1,53 @@
+services:
+  mariadb:
+    container_name: mariadb
+    build:
+      context: ./mariadb
+    networks:
+      - database
+    volumes:
+      - database
+    restart: always
+
+  wordpress:
+    container_name: wordpress
+    depends_on:
+      mariadb:
+        condition: service_healthy
+    build:
+      context: ./wordpress
+    networks:
+      - wordpress
+      - database
+    volumes:
+      - wordpress
+    restart: always
+  
+  nginx:
+    container_name: nginx
+    depends_on:
+      wordpress:
+        condition: service_healthy
+    build:
+      context: ./nginx
+    networks:
+      - wordpress
+    restart: always
+
+networks:
+  wordpress:
+  database:
+
+volumes:
+  database:
+    driver: local
+    driver_opts:
+      type: none
+      device: /home/gbaumgar/data/db
+      o: bind
+  wordpress:
+    driver: local
+    driver_opts:
+      type: none
+      device: /home/gbaumgar/data/wp
+      o: bind
