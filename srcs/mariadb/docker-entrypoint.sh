@@ -6,9 +6,6 @@ do_query() {
 
 if [ "$1" = 'mariadb' ]; then
   if [ ! -f ".mariadb" ]; then
-    # init mariadb datadir
-    mysql_install_db --rpm --auth-root-authentication-method=normal
-
     # start temporary server for bootstrapping
     mysqld --skip-networking --default-time-zone=SYSTEM --wsrep_on=OFF --expire-logs-days=0 --loose-innodb_buffer_pool_load_at_startup=0 &
 
@@ -16,9 +13,6 @@ if [ "$1" = 'mariadb' ]; then
     while ! mysqladmin ping --silent; do
         sleep 1
     done
-
-    # change root password
-    do_query "SET PASSWORD FOR 'root'@'%' = PASSWORD('$MARIADB_ROOT_PASSWORD');"
 
     # delete remote root user
     do_query "DELETE FROM mysql.user WHERE User='root' AND Host NOT IN ('localhost', '127.0.0.1', '::1');"
@@ -40,9 +34,12 @@ if [ "$1" = 'mariadb' ]; then
     # apply changes
     do_query "FLUSH PRIVILEGES;"
 
-    # stop temporary server
-    MYSQL_PWD=$MARIADB_ROOT_PASSWORD mysqladmin shutdown -uroot
+    # change root password
+    do_query "ALTER USER 'root'@'localhost' IDENTIFIED VIA mysql_native_password;"
+    do_query "SET PASSWORD = PASSWORD('$MARIADB_ROOT_PASSWORD');"
 
+    # stop temporary server
+    mysqladmin shutdown -uroot -p$MARIADB_ROOT_PASSWORD
     touch .mariadb
   fi
 

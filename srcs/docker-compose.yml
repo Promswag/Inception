@@ -7,7 +7,7 @@ services:
       - database
     volumes:
       - database:/var/lib/mysql
-    restart: always
+    restart: "no"
     env_file:
       - .env
     healthcheck:
@@ -15,7 +15,7 @@ services:
       interval: 10s
       timeout: 10s
       retries: 3
-      start_period: 30s
+      start_period: 1s
 
   wordpress:
     container_name: wordpress
