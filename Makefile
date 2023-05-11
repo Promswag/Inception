@@ -1,10 +1,16 @@
-all:
+all: crt
 	mkdir -p /home/gbaumgar/data/wp
 	mkdir -p /home/gbaumgar/data/db
-	docker compose up -d --build
+	docker compose --file srcs/docker-compose.yml up -d --build
+
+crt:
+	openssl req -x509 -nodes -days 365 -newkey rsa:2048 \
+	-keyout nginx/gbaumgar.42.fr.key \
+	-out nginx/gbaumgar.42.fr.crt \
+	-subj "/CN=gbaumgar.42.fr"
 
 down:
-	docker compose down -v
+	docker compose --file srcs/docker-compose.yml down -v
 
 clean: down
 	docker volume prune --force

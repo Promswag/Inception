@@ -7,7 +7,7 @@ services:
       - database
     volumes:
       - database:/var/lib/mysql
-    restart: "no"
+    restart: always
     env_file:
       - .env
     healthcheck:
@@ -37,7 +37,6 @@ services:
     container_name: nginx
     depends_on:
       - wordpress
-        # condition: service_healthy
     build:
       context: ./nginx
     networks:
