@@ -5,8 +5,8 @@ all: crt
 
 crt:
 	openssl req -x509 -nodes -days 365 -newkey rsa:2048 \
-	-keyout nginx/gbaumgar.42.fr.key \
-	-out nginx/gbaumgar.42.fr.crt \
+	-keyout srcs/nginx/gbaumgar.42.fr.key \
+	-out srcs/ginx/gbaumgar.42.fr.crt \
 	-subj "/CN=gbaumgar.42.fr"
 
 down:
@@ -15,6 +15,6 @@ down:
 clean: down
 	docker volume prune --force
 
-fclean:
+fclean: down
 	rm -rf /home/gbaumgar/data
 	docker system prune --force --volumes
