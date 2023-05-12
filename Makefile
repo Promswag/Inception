@@ -9,6 +9,9 @@ crt:
 	-out srcs/nginx/gbaumgar.42.fr.crt \
 	-subj "/CN=gbaumgar.42.fr"
 
+nocache:
+	docker compose --file srcs/docker-compose.yml build --no-cache
+
 down:
 	docker compose --file srcs/docker-compose.yml down -v
 
