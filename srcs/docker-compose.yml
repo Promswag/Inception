@@ -38,6 +38,7 @@ services:
   
   nginx:
     container_name: nginx
+    restart: always
     depends_on:
       - wordpress
     build:
@@ -48,19 +49,16 @@ services:
       - wordpress:/var/www/html
     ports:
       - 443:443
-    restart: always
 
   redis:
     container_name: redis
+    restart: always
     build:
       context: requirements/bonus/redis
     networks:
       - redis
-    # volumes:
-    #   - wordpress:/var/www/html
-    # ports:
-    #   - 443:443
-    restart: always
+    env_file:
+      - .env
     healthcheck:
       test: ["CMD", "healthcheck.sh"]
       interval: 1s

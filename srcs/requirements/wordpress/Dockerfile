@@ -10,6 +10,7 @@ RUN \
 		php7.4-gd \
 		php7.4-mbstring \
 		php7.4-zip \
+		php-redis \
 		mariadb-client
 
 RUN mkdir -p /var/www/html
