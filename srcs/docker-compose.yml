@@ -12,9 +12,9 @@ services:
       - .env
     healthcheck:
       test: ["CMD", "healthcheck.sh"]
-      interval: 10s
-      timeout: 10s
-      retries: 3
+      interval: 1s
+      timeout: 5s
+      retries: 10
       start_period: 1s
 
   wordpress:
@@ -22,7 +22,8 @@ services:
     depends_on:
       mariadb:
         condition: service_healthy
-      - redis
+      redis:
+        condition: service_healthy
     build:
       context: requirements/wordpress
     networks:
@@ -51,8 +52,6 @@ services:
 
   redis:
     container_name: redis
-    depends_on:
-      - wordpress
     build:
       context: requirements/bonus/redis
     networks:
@@ -62,6 +61,12 @@ services:
     # ports:
     #   - 443:443
     restart: always
+    healthcheck:
+      test: ["CMD", "healthcheck.sh"]
+      interval: 1s
+      timeout: 5s
+      retries: 10
+      start_period: 1s
 
 networks:
   wordpress:
