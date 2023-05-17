@@ -1,23 +1,29 @@
+DOCKER_COMPOSE = docker compose --file srcs/docker-compose.yml
+DELETE_DATA = sudo rm -rf /home/gbaumgar/data
+
 all: crt
 	sudo mkdir -p /home/gbaumgar/data/wp
 	sudo mkdir -p /home/gbaumgar/data/db
-	docker compose --file srcs/docker-compose.yml up -d --build
+	sudo $(DOCKER_COMPOSE) up -d --build
 
 crt:
 	openssl req -x509 -nodes -days 365 -newkey rsa:2048 \
-	-keyout srcs/nginx/gbaumgar.42.fr.key \
-	-out srcs/nginx/gbaumgar.42.fr.crt \
+	-keyout srcs/requirements/nginx/gbaumgar.42.fr.key \
+	-out srcs/requirements/nginx/gbaumgar.42.fr.crt \
 	-subj "/CN=gbaumgar.42.fr"
 
 nocache:
-	docker compose --file srcs/docker-compose.yml build --no-cache
+	sudo $(DOCKER_COMPOSE) build --no-cache
 
 down:
-	docker compose --file srcs/docker-compose.yml down -v
+	sudo $(DOCKER_COMPOSE) down -v
 
 clean: down
-	docker volume prune --force
+	$(DELETE_DATA)
+	sudo docker volume prune --force
 
 fclean: down
-	sudo rm -rf /home/gbaumgar/data
-	docker system prune --force --volumes
+	$(DELETE_DATA)
+	sudo docker system prune --force --volumes
+
+re: fclean all

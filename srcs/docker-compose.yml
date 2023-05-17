@@ -22,11 +22,13 @@ services:
     depends_on:
       mariadb:
         condition: service_healthy
+      - redis
     build:
       context: requirements/wordpress
     networks:
       - wordpress
       - database
+      - redis
     volumes:
       - wordpress:/var/www/html
     restart: always
@@ -44,13 +46,27 @@ services:
     volumes:
       - wordpress:/var/www/html
     ports:
-      # - 80:80
       - 443:443
+    restart: always
+
+  redis:
+    container_name: redis
+    depends_on:
+      - wordpress
+    build:
+      context: requirements/bonus/redis
+    networks:
+      - redis
+    # volumes:
+    #   - wordpress:/var/www/html
+    # ports:
+    #   - 443:443
     restart: always
 
 networks:
   wordpress:
   database:
+  redis:
 
 volumes:
   database:
