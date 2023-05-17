@@ -15,9 +15,8 @@ RUN \
 RUN mkdir -p /var/www/html
 RUN chown -R www-data:www-data /var/www/html
 
-COPY setup.sh /usr/local/bin/
-COPY php-fpm.conf /etc/php/7.4/fpm/php-fpm.conf
-COPY docker-entrypoint.sh /usr/local/bin/
+COPY conf /etc/php/7.4/fpm/php-fpm.conf
+COPY tools/docker-entrypoint.sh /usr/local/bin/
 RUN chmod +x /usr/local/bin/docker-entrypoint.sh
 
 ADD https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar /usr/local/bin/wp

@@ -1,6 +1,6 @@
 all: crt
-	mkdir -p /home/gbaumgar/data/wp
-	mkdir -p /home/gbaumgar/data/db
+	sudo mkdir -p /home/gbaumgar/data/wp
+	sudo mkdir -p /home/gbaumgar/data/db
 	docker compose --file srcs/docker-compose.yml up -d --build
 
 crt:
@@ -19,5 +19,5 @@ clean: down
 	docker volume prune --force
 
 fclean: down
-	rm -rf /home/gbaumgar/data
+	sudo rm -rf /home/gbaumgar/data
 	docker system prune --force --volumes

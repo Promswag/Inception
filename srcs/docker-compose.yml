@@ -2,7 +2,7 @@ services:
   mariadb:
     container_name: mariadb
     build:
-      context: ./mariadb
+      context: requirements/mariadb
     networks:
       - database
     volumes:
@@ -23,7 +23,7 @@ services:
       mariadb:
         condition: service_healthy
     build:
-      context: ./wordpress
+      context: requirements/wordpress
     networks:
       - wordpress
       - database
@@ -38,13 +38,13 @@ services:
     depends_on:
       - wordpress
     build:
-      context: ./nginx
+      context: requirements/nginx
     networks:
       - wordpress
     volumes:
       - wordpress:/var/www/html
     ports:
-      - 80:80
+      # - 80:80
       - 443:443
     restart: always
 
