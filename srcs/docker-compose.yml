@@ -1,13 +1,13 @@
 services:
   mariadb:
     container_name: mariadb
+    restart: always
     build:
       context: requirements/mariadb
     networks:
       - database
     volumes:
       - database:/var/lib/mysql
-    restart: always
     env_file:
       - .env
     healthcheck:
@@ -19,34 +19,36 @@ services:
 
   wordpress:
     container_name: wordpress
+    restart: always
+    build:
+      context: requirements/wordpress
     depends_on:
       mariadb:
         condition: service_healthy
       redis:
         condition: service_healthy
-    build:
-      context: requirements/wordpress
     networks:
       - wordpress
       - database
       - redis
     volumes:
       - wordpress:/var/www/html
-    restart: always
     env_file:
       - .env
   
   nginx:
     container_name: nginx
     restart: always
-    depends_on:
-      - wordpress
     build:
       context: requirements/nginx
+    depends_on:
+      - wordpress
+      - adminer
     networks:
       - wordpress
     volumes:
       - wordpress:/var/www/html
+      - adminer:/adminer/
     ports:
       - 443:443
 
@@ -65,6 +67,16 @@ services:
       timeout: 5s
       retries: 10
       start_period: 1s
+  
+  adminer:
+    container_name: adminer
+    build:
+      context: requirements/bonus/adminer
+    networks:
+      - wordpress
+    volumes:
+      - adminer:/adminer/
+    
 
 networks:
   wordpress:
@@ -83,4 +95,10 @@ volumes:
     driver_opts:
       type: none
       device: /home/gbaumgar/data/wp
+      o: bind
+  adminer:
+    driver: local
+    driver_opts:
+      type: none
+      device: /home/gbaumgar/data/adminer
       o: bind
