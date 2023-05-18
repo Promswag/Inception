@@ -7,13 +7,14 @@ if [ "$1" = '_start' ]; then
 	wp user create $USER_USER $USER_EMAIL --role=author --user_pass=$USER_PASS --allow-root
 	wp theme install inspiro --activate --allow-root
 
-	wp config set WP_REDIS_CLIENT phpredis
-	wp config set WP_REDIS_SCHEME tcp
-	wp config set WP_REDIS_HOST $REDIS_HOST
-	wp config set WP_REDIS_PORT $REDIS_PORT
-	wp config set WP_REDIS_PASSWORD $REDIS_PASS
-	wp plugin install redis-cache --activate
-	wp redis enable
+	wp config set WP_REDIS_CLIENT phpredis --allow-root
+	wp config set WP_REDIS_SCHEME tcp --allow-root
+	wp config set WP_REDIS_HOST $REDIS_HOST --allow-root
+	wp config set WP_REDIS_PORT $REDIS_PORT --allow-root
+	wp config set WP_REDIS_PASSWORD $REDIS_PASS --allow-root
+	wp plugin install redis-cache --activate --allow-root
+	wp redis enable --allow-root
+	chown -R www-data:www-data /var/www/html
 	exec php-fpm7.4 -F
 fi
 

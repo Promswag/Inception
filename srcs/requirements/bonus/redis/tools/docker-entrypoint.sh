@@ -2,7 +2,7 @@
 
 if [ "$1" = '_start' ]; then
 	sed -i "s/REDIS_PASS/$REDIS_PASS/" /etc/redis/redis.conf
-	redis-server
+	redis-server /etc/redis/redis.conf
 fi
 
 exec "$@"

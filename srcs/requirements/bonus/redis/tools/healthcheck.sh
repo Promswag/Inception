@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
 
-redis-cli ping
+REDISCLI_AUTH=$REDIS_PASS redis-cli -h redis ping
 
 exit $?

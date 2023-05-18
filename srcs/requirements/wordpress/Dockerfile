@@ -14,7 +14,6 @@ RUN \
 		mariadb-client
 
 RUN mkdir -p /var/www/html
-RUN chown -R www-data:www-data /var/www/html
 
 COPY conf/php-fpm.conf /etc/php/7.4/fpm/php-fpm.conf
 COPY tools/docker-entrypoint.sh /usr/local/bin/docker-entrypoint.sh
@@ -26,4 +25,4 @@ ENTRYPOINT ["docker-entrypoint.sh"]
 
 WORKDIR "/var/www/html"
 
-CMD ["wordpress"]
+CMD ["_start"]
