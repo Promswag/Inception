@@ -33,7 +33,7 @@ services:
       - redis
     volumes:
       - wordpress:/var/www/html
-      - adminer:/adminer/
+      - adminer:/adminer
     env_file:
       - .env
   
@@ -49,7 +49,7 @@ services:
       - wordpress
     volumes:
       - wordpress:/var/www/html
-      # - adminer:/adminer/
+      - adminer:/adminer
     ports:
       - 443:443
 
@@ -76,7 +76,21 @@ services:
     networks:
       - wordpress
     volumes:
-      - adminer:/adminer/
+      - adminer:/adminer
+
+  ftp:
+    container_name: ftp
+    restart: always
+    build:
+      context: requirements/bonus/ftp
+    depends_on:
+      - wordpress
+    volumes:
+      - wordpress:/wordpress
+    ports:
+      - 21:21
+    env_file:
+      - .env
     
 
 networks:
