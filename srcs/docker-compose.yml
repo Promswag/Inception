@@ -32,8 +32,8 @@ services:
       - database
       - redis
     volumes:
-      - wordpress:/var/www/html
-      - adminer:/adminer
+      - wordpress:/var/www
+      - sites:/sites
     env_file:
       - .env
   
@@ -45,11 +45,12 @@ services:
     depends_on:
       - wordpress
       - adminer
+      - blueasy
     networks:
       - wordpress
     volumes:
-      - wordpress:/var/www/html
-      - adminer:/adminer
+      - wordpress:/var/www
+      - sites:/sites
     ports:
       - 443:443
 
@@ -76,7 +77,18 @@ services:
     networks:
       - wordpress
     volumes:
-      - adminer:/adminer
+      - wordpress:/var/www
+      - sites:/sites
+  
+  blueasy:
+    container_name: blueasy
+    build:
+      context: requirements/bonus/blueasy
+    networks:
+      - wordpress
+    volumes:
+      - wordpress:/var/www
+      - sites:/sites
 
   ftp:
     container_name: ftp
@@ -89,6 +101,7 @@ services:
       - wordpress:/wordpress
     ports:
       - 21:21
+      - 21100-21110:21100-21110
     env_file:
       - .env
     
@@ -111,9 +124,9 @@ volumes:
       type: none
       device: /home/gbaumgar/data/wp
       o: bind
-  adminer:
+  sites:
     driver: local
     driver_opts:
       type: none
-      device: /home/gbaumgar/data/adminer
+      device: /home/gbaumgar/data/sites
       o: bind

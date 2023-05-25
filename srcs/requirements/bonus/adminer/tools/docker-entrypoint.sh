@@ -1,9 +1,11 @@
 #!/usr/bin/env bash
 
 if [ "$1" = "adminer" ]; then
-	wget -O /adminer/index.php https://github.com/vrana/adminer/releases/download/v4.8.1/adminer-4.8.1.php
-	chmod +x /adminer/index.php
-	chown -R www-data:www-data /adminer
+	mv /adminer_nginx.conf /sites/
+	chmod +x /var/www/adminer/index.php
+	mkdir -p /var/www/adminer
+	mv /index.php /var/www/adminer/
+	chown -R www-data:www-data /var/www/adminer
 	exit 0
 fi
 

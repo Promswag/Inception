@@ -4,7 +4,7 @@ DELETE_DATA = sudo rm -rf /home/gbaumgar/data
 all: crt
 	sudo mkdir -p /home/gbaumgar/data/wp
 	sudo mkdir -p /home/gbaumgar/data/db
-	sudo mkdir -p /home/gbaumgar/data/adminer
+	sudo mkdir -p /home/gbaumgar/data/sites
 	sudo $(DOCKER_COMPOSE) up -d --build
 
 crt:
