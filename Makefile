@@ -5,6 +5,7 @@ all: crt
 	sudo mkdir -p /home/gbaumgar/data/wp
 	sudo mkdir -p /home/gbaumgar/data/db
 	sudo mkdir -p /home/gbaumgar/data/sites
+	sudo mkdir -p /home/gbaumgar/data/logs
 	sudo $(DOCKER_COMPOSE) up -d --build
 
 crt:

@@ -51,7 +51,9 @@ services:
     volumes:
       - wordpress:/var/www
       - sites:/sites
+      - logs:/var/log/nginx
     ports:
+      - 80:80
       - 443:443
 
   redis:
@@ -90,6 +92,21 @@ services:
       - wordpress:/var/www
       - sites:/sites
 
+  goaccess:
+    container_name: goaccess
+    restart: always
+    build:
+      context: requirements/bonus/goaccess
+    depends_on:
+      - nginx
+    volumes:
+      - wordpress:/var/www
+      - sites:/sites
+      - logs:/var/log/nginx
+    ports:
+      - 7890:7890
+      - 9999:9999
+
   ftp:
     container_name: ftp
     restart: always
@@ -104,7 +121,6 @@ services:
       - 21100-21110:21100-21110
     env_file:
       - .env
-    
 
 networks:
   wordpress:
@@ -129,4 +145,10 @@ volumes:
     driver_opts:
       type: none
       device: /home/gbaumgar/data/sites
+      o: bind
+  logs:
+    driver: local
+    driver_opts:
+      type: none
+      device: /home/gbaumgar/data/logs
       o: bind
