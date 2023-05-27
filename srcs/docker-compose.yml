@@ -46,6 +46,7 @@ services:
       - wordpress
       - adminer
       - blueasy
+      - goaccess
     networks:
       - wordpress
     volumes:
@@ -53,7 +54,6 @@ services:
       - sites:/sites
       - logs:/var/log/nginx
     ports:
-      - 80:80
       - 443:443
 
   redis:
@@ -97,8 +97,6 @@ services:
     restart: always
     build:
       context: requirements/bonus/goaccess
-    depends_on:
-      - nginx
     volumes:
       - wordpress:/var/www
       - sites:/sites
